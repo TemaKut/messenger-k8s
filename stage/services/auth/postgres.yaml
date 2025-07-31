@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: services-auth-postgres-db
+  labels:
+    type: db
+spec:
+  containers:
+    - name: postgres
+      image: postgres:17.5-alpine
+      env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: services-auth-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: services-auth-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: services-auth-secret
+              key: POSTGRES_DB
+  restartPolicy: Always
+  

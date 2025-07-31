@@ -1,0 +1,8 @@
+apiVersion: v1 # TODO External secrets. Learn more..
+kind: Secret
+metadata:
+  name: services-auth-secret
+data:
+  POSTGRES_USER: root
+  POSTGRES_PASSWORD: root
+  POSTGRES_DB: auth
