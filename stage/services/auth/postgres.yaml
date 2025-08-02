@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   namespace: stage
   name: services-auth-postgres-pvc
+  labels:
+    service: auth
 spec:
   accessModes:
     - ReadWriteOnce
@@ -17,6 +19,8 @@ kind: Deployment
 metadata:
   namespace: stage
   name: services-auth-postgres-db-master-deployment
+  labels:
+    service: auth
 spec:
   replicas: 1
   strategy:
@@ -74,6 +78,8 @@ kind: Service
 metadata:
   namespace: stage
   name: services-auth-postgres-db-master-service
+  labels:
+    service: auth
 spec:
   type: NodePort
   selector:
