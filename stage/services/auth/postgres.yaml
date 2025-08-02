@@ -4,6 +4,8 @@ metadata:
   namespace: stage
   name: services-auth-postgres-pvc
 spec:
+  accessModes:
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -14,17 +16,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: stage
-  name: services-auth-postgres-db-deployment
-  labels:
-    service: auth
-    name: postgres-db
-    type: deployment
+  name: services-auth-postgres-db-master-deployment
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   selector:
     matchLabels:
       service: auth
       name: postgres-db
+      isMaster: true
   template:
     metadata:
       namespace: stage
@@ -32,6 +36,7 @@ spec:
       labels:
         service: auth
         name: postgres-db
+        isMaster: true
     spec:
       restartPolicy: Always
       containers:
@@ -61,4 +66,21 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: services-auth-postgres-pvc
-  
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: stage
+  name: services-auth-postgres-db-master-service
+spec:
+  type: NodePort
+  selector:
+    service: auth
+    name: postgres-db
+    isMaster: true
+  ports:
+    - port: 5400
+      targetPort: 5432
+      nodePort: 31000
