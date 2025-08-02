@@ -28,7 +28,7 @@ spec:
     matchLabels:
       service: auth
       name: postgres-db
-      isMaster: true
+      type: master
   template:
     metadata:
       namespace: stage
@@ -36,7 +36,7 @@ spec:
       labels:
         service: auth
         name: postgres-db
-        isMaster: true
+        type: master
     spec:
       restartPolicy: Always
       containers:
@@ -79,7 +79,7 @@ spec:
   selector:
     service: auth
     name: postgres-db
-    isMaster: true
+    type: master
   ports:
     - port: 5400
       targetPort: 5432
