@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: stage
+  name: services-auth-postgres-db-master-deployment
+  labels:
+    service: auth
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      service: auth
+      name: postgres-db
+      type: master
+  template:
+    metadata:
+      namespace: stage
+      name: services-auth-postgres-db
+      labels:
+        service: auth
+        name: postgres-db
+        type: master
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: postgres
+          image: postgres:17.5-alpine
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: services-auth-config-map
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: services-auth-config-map
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: services-auth-config-map
+                  key: POSTGRES_DB
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: stage
+  name: services-auth-postgres-db-master-service
+  labels:
+    service: auth
+spec:
+  type: NodePort
+  selector:
+    service: auth
+    name: postgres-db
+    type: master
+  ports:
+    - port: 5400
+      targetPort: 5432
+      nodePort: 31000

@@ -1,0 +1,9 @@
+apiVersion: v1 # TODO External secrets. Learn more..
+kind: ConfigMap
+metadata:
+  namespace: stage
+  name: services-auth-config-map
+data:
+  POSTGRES_USER: "root"
+  POSTGRES_PASSWORD: "root"
+  POSTGRES_DB: "auth"
