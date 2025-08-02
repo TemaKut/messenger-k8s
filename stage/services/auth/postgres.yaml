@@ -49,18 +49,18 @@ spec:
           env:
             - name: POSTGRES_USER
               valueFrom:
-                secretKeyRef:
-                  name: services-auth-secret
+                configMapKeyRef:
+                  name: services-auth-config-map
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
-                secretKeyRef:
-                  name: services-auth-secret
+                configMapKeyRef:
+                  name: services-auth-config-map
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
-                secretKeyRef:
-                  name: services-auth-secret
+                configMapKeyRef:
+                  name: services-auth-config-map
                   key: POSTGRES_DB
           volumeMounts:
             - name: data
