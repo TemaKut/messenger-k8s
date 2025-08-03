@@ -34,8 +34,6 @@ jobs:
       - name: apply-postgres-db
         if: inputs.apply-db
         run: kubectl apply -f stage/services/auth/postgres.yaml
-      - name: sdfsdfs
-        run: ls stage/services/auth
       - name: apply-service
         run: |
           export MESSENGER_AUTH_IMAGE_TAG=${{ inputs.apply-service-tag }}
