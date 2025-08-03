@@ -6,6 +6,17 @@ on:
       path-to-root:
         required: true
         type: string
+      apply-config:
+        required: false
+        type: boolean
+        default: false
+      apply-db:
+        required: false
+        type: boolean
+        default: false
+      apply-service-tag:
+        required: true
+        type: string
 jobs:
   apply-k8s-manifests:
     runs-on: self-hosted
@@ -13,13 +24,15 @@ jobs:
       run:
         working-directory: ${{ inputs.path-to-root }}
     steps:
-      - name: rrrr
-        run: ls
-      - name: fff
-        run: pwd
       - name: Checkout code with submodules
         uses: actions/checkout@v4
       - name: apply-config
+        if: inputs.apply-config
         run: kubectl apply -f stage/services/auth/config.yaml
       - name: apply-postgres-db
+        if: inputs.apply-db
         run: kubectl apply -f stage/services/auth/postgres.yaml
+      - name: apply-service
+        run: |
+          export MESSENGER_AUTH_IMAGE_TAG=${{ inputs.apply-service-tag }}
+          kubectl kustomize ./stage/services/auth | envsubst | kubectl apply -f -

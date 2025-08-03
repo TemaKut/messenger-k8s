@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: stage
+  name: services-auth-service-deployment
+  labels:
+    service: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: auth
+      name: service
+  template:
+    metadata:
+      name: service-auth
+      labels:
+        service: auth
+        name: service
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: service-auth
+          image: temacu/messenger-auth:latest
+          imagePullPolicy: IfNotPresent
