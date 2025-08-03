@@ -9,7 +9,7 @@ on:
         description: "machine to run jobs"
 jobs:
   apply-k8s-manifests:
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: self-hosted
     steps:
       - name: Checkout code with submodules
         uses: actions/checkout@v4
