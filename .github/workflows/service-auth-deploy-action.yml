@@ -1,0 +1,38 @@
+name: Deploy Auth Service
+
+on:
+  workflow_call:
+    inputs:
+      path-to-root:
+        required: true
+        type: string
+      apply-config:
+        required: false
+        type: boolean
+        default: false
+      apply-db:
+        required: false
+        type: boolean
+        default: false
+      apply-service-tag:
+        required: true
+        type: string
+jobs:
+  apply-k8s-manifests:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ${{ inputs.path-to-root }}
+    steps:
+      - name: apply-config
+        if: inputs.apply-config
+        run: kubectl apply -f stage/services/auth/config.yaml
+      - name: apply-postgres-db
+        if: inputs.apply-db
+        run: kubectl apply -f stage/services/auth/postgres.yaml
+      - name: sdfsdfs
+        run: ls stage/services/auth
+      - name: apply-service
+        run: |
+          export MESSENGER_AUTH_IMAGE_TAG=${{ inputs.apply-service-tag }}
+          kubectl kustomize stage/services/auth | envsubst | kubectl apply -f -
