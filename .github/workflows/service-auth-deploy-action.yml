@@ -26,6 +26,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - name: apply-config
         if: inputs.apply-config
         run: kubectl apply -f stage/services/auth/config.yaml
