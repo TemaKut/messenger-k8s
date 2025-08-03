@@ -2,11 +2,6 @@ name: Deploy Auth Service
 
 on:
   workflow_call:
-    inputs:
-      runs-on:
-        required: true
-        type: string
-        description: "machine to run jobs"
 jobs:
   apply-k8s-manifests:
     runs-on: self-hosted
