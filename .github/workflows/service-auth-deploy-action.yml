@@ -24,6 +24,8 @@ jobs:
       run:
         working-directory: ${{ inputs.path-to-root }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: apply-config
         if: inputs.apply-config
         run: kubectl apply -f stage/services/auth/config.yaml
