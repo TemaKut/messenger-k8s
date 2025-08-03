@@ -1,0 +1,19 @@
+name: Deploy Auth Service
+
+on:
+  workflow_call:
+    inputs:
+      runs-on:
+        required: true
+        type: string
+        description: "machine to run jobs"
+jobs:
+  apply-k8s-manifests:
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - name: Checkout code with submodules
+        uses: actions/checkout@v4
+      - name: apply-config
+        run: kubectl apply -f stage/services/auth/config.yaml
+      - name: apply-postgres-db
+        run: kubectl apply -f stage/services/auth/postgres.yaml
