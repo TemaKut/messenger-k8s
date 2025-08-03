@@ -35,4 +35,4 @@ jobs:
       - name: apply-service
         run: |
           export MESSENGER_AUTH_IMAGE_TAG=${{ inputs.apply-service-tag }}
-          kubectl kustomize ./stage/services/auth | envsubst | kubectl apply -f -
+          kubectl kustomize stage/services/auth | envsubst | kubectl apply -f -
