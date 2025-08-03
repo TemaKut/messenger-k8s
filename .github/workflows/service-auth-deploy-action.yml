@@ -2,10 +2,21 @@ name: Deploy Auth Service
 
 on:
   workflow_call:
+    inputs:
+      path-to-root:
+        required: true
+        type: string
 jobs:
   apply-k8s-manifests:
     runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ${{ inputs.path-to-root }}
     steps:
+      - name: rrrr
+        run: ls
+      - name: fff
+        run: pwd
       - name: Checkout code with submodules
         uses: actions/checkout@v4
       - name: apply-config
