@@ -1,0 +1,9 @@
+apiVersion: v1 # TODO External secrets. Learn more..
+kind: ConfigMap
+metadata:
+  namespace: stage
+  name: services-apigateway-config-map
+data:
+  APIGATEWAY_LOGGER_LEVEL: "1"
+  APIGATEWAY_SERVER_ADDR: "8000"
+  APIGATEWAY_CLIENTS_USER_API_ADDR: "services-auth-service-cluster-ip:8002"

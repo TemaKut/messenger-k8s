@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - service.yaml
+
+images:
+  - name: temacu/messenger-apigateway
+    newTag: $MESSENGER_APIGATEWAY_IMAGE_TAG

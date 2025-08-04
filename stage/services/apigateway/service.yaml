@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-apigateway-service-deployment
+  labels:
+    service: apigateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: apigateway
+      name: service
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      name: service-apigateway-service
+      labels:
+        service: apigateway
+        name: service
+    spec:
+      containers:
+        - name: service-apigateway-service-container
+          image: temacu/messenger-apigateway:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APIGATEWAY_LOGGER_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: services-apigateway-config-map
+                  key: APIGATEWAY_LOGGER_LEVEL
+            - name: APIGATEWAY_SERVER_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: services-apigateway-config-map
+                  key: APIGATEWAY_SERVER_ADDR
+            - name: APIGATEWAY_CLIENTS_USER_API_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: services-apigateway-config-map
+                  key: APIGATEWAY_CLIENTS_USER_API_ADDR
+      restartPolicy: Always
+      
