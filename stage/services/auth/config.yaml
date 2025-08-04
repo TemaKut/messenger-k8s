@@ -7,3 +7,8 @@ data:
   POSTGRES_USER: "root"
   POSTGRES_PASSWORD: "root"
   POSTGRES_DB: "auth"
+
+  AUTH_LOGGER_LEVEL: "1"
+  AUTH_SERVER_GRPC_ADDR: ":8000"
+  AUTH_SERVICES_USER_AUTH_TOKEN_SECRET: "someSecretForJWT"
+  AUTH_STORAGE_POSTGRES_CONN_STR: "postgres://auth_user:123123@services-auth-postgres-db-master-service:5400/auth?sslmode=disable"

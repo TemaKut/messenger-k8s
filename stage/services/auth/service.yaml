@@ -13,6 +13,7 @@ spec:
       name: service
   template:
     metadata:
+      namespace: stage
       name: service-auth
       labels:
         service: auth
@@ -23,3 +24,43 @@ spec:
         - name: service-auth
           image: temacu/messenger-auth:latest
           imagePullPolicy: IfNotPresent
+          env:
+            - name: AUTH_LOGGER_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: services-auth-config-map
+                  key: AUTH_LOGGER_LEVEL
+            - name: AUTH_SERVER_GRPC_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  name: services-auth-config-map
+                  key: AUTH_SERVER_GRPC_ADDR
+            - name: AUTH_SERVICES_USER_AUTH_TOKEN_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: services-auth-config-map
+                  key: AUTH_SERVICES_USER_AUTH_TOKEN_SECRET
+            - name: AUTH_STORAGE_POSTGRES_CONN_STR
+              valueFrom:
+                configMapKeyRef:
+                  name: services-auth-config-map
+                  key: AUTH_STORAGE_POSTGRES_CONN_STR
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: stage
+  name: services-auth-service-cluster-ip
+  labels:
+    service: auth
+    type: cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    service: auth
+    name: service
+  ports:
+    - port: 8002
+      targetPort: 8000
