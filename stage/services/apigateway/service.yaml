@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: stage
   name: service-apigateway-service-deployment
   labels:
     service: apigateway
@@ -17,6 +18,7 @@ spec:
       maxSurge: 1
   template:
     metadata:
+      namespace: stage
       name: service-apigateway-service
       labels:
         service: apigateway
